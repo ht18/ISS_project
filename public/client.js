@@ -2,28 +2,6 @@ import * as THREE from 'three'
 import { OrbitControls } from './jsm/controls/OrbitControls.js'
 import { GUI } from './jsm/libs/lil-gui.module.min.js'
 
-
-// API
-const endpoint = "http://api.open-notify.org/iss-now.json";
-const arrayOfData = [];
-function setData(dataArr) {
-    arrayOfData.push(dataArr['iss_position']['latitude'], dataArr['iss_position']['longitude']);
-    return arrayOfData;
-}
-
-async function getData() {
-    const response = await fetch(endpoint);
-    const responseJson = await response.json();
-    const data = setData(responseJson);
-    console.log(data);
-    setInterval(() => {
-        getData();
-    }, 5000)
-    return data
-}
-
-
-
 //scène
 const scene = new THREE.Scene();
 
@@ -60,7 +38,7 @@ const earth = new THREE.Mesh(earthGeometry, earthMaterial)
 scene.add(earth);
 
 //Point
-const info = document.getElementById('info');
+const info = document.getElementById('info')
 const latLongDiv = document.createElement('div');
 latLongDiv.classList.add('text');
 
@@ -92,8 +70,6 @@ pointLive()
 const light = new THREE.AmbientLight(0x404040, 2.5); // soft white light
 scene.add(light);
 
-
-
 window.addEventListener(
     'resize',
     () => {
@@ -113,7 +89,7 @@ cameraFolder.open()
 
 function animate() {
     requestAnimationFrame(animate)
-    //earth.rotation.y += 0.001;
+    scene.rotation.y += 0.001;
     // il va falloir faire tourner le point pour l'afficher comme il faut 
     controls.update()
     render()
